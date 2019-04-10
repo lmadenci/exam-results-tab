@@ -1,0 +1,33 @@
+// color vars
+$light-gray: #f5f5f5;
+$mid-gray: #e7e7e7;
+$border-default: 1px solid $mid-gray;
+$font-default: 14px;
+
+.container {
+  margin: 10px;
+  border: $border-default;
+  border-radius: 3px;
+  overflow-x: scroll;
+}
+
+table {
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+tr {
+  border: $border-default;
+  font-size: $font-default;
+
+}
+
+th {
+  text-align: left;
+  background-color: $light-gray;
+}
+
+th,td {
+  white-space: nowrap;
+  padding: 12px 25px;
+}

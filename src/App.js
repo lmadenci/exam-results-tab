@@ -1,28 +1,47 @@
-import React, { Component } from 'react';
+import React, {useState, useEffect} from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import { DataGrid } from './components/DataGrid';
+import { ChartArea } from './components/ChartArea';
 
-class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
-      </div>
-    );
-  }
+const App = () => {
+  const [rows, setRows] = useState([]);
+  useEffect(
+    () => {
+      fetch('https://spreadsheets.google.com/feeds/list/1tHJw9nUABvlbVpfIiy_cNG5HDRFe_JAJUG2qLlcwi_k/od6/public/values?alt=json')
+        .then(
+          (response) => {
+            return response.json();
+          }
+        ).then(
+          (data) => {
+
+            const cleanRows = data.feed.entry.map(row => {
+              const cleanRow = {};
+
+              const columns = row.content.$t.split(', ');
+
+              columns.forEach(column => {
+                const splat = column.split(': ');
+                cleanRow[splat[0]]=splat[1];
+              })
+
+              return cleanRow;
+            });
+
+            setRows(cleanRows);
+
+          }
+        )
+    }, []
+  )
+
+  return (
+    <div className="section">
+      <ChartArea />
+      <DataGrid rows={rows}/>
+    </div>
+  );
 }
 
 export default App;
